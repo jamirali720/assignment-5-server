@@ -22,8 +22,7 @@ export const isAuthenticated = (...roles: TRoles[]) => {
       );
     }
 
-    const decoded = verifyToken(token, configs.jwtAccessTokenSecretKey as string);
-    console.log(decoded)
+    const decoded = verifyToken(token, configs.jwtAccessTokenSecretKey as string);   
 
     if (!decoded) {
       throw new ErrorHandler(

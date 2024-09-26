@@ -25,26 +25,68 @@ const handleCreateRental = (0, higherOrderFunction_1.default)((req, res) => __aw
         data: result
     });
 }));
+const handleCalculateRental = (0, higherOrderFunction_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield booking_services_1.bookingServices.calculateBikeService(req.params.id, req.body.returnTime);
+    (0, success_1.successResponse)(res, {
+        success: true,
+        statusCode: 201,
+        message: "Bike fair calculated successfully",
+        data: result,
+    });
+}));
 const handleReturnRental = (0, higherOrderFunction_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield booking_services_1.bookingServices.returnBikeService(req.params.id);
     (0, success_1.successResponse)(res, {
         success: true,
         statusCode: 201,
-        message: "Rental Returned successfully",
+        message: "Bike returned successfully",
+        data: result,
+    });
+}));
+// update booking after refund money
+const handleUpdateBookingAfterReturnMoney = (0, higherOrderFunction_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield booking_services_1.bookingServices.updateBookingAfterRefundMoneyService(req.params.bookingId);
+    (0, success_1.successResponse)(res, {
+        success: true,
+        statusCode: 201,
+        message: "Booking updated after returned money successfully",
+        data: result,
+    });
+}));
+const handleGetRentalsByUserId = (0, higherOrderFunction_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield booking_services_1.bookingServices.getRentalByUserIdService(req.user.userId);
+    (0, success_1.successResponse)(res, {
+        success: true,
+        statusCode: 201,
+        message: "Rentals retrieved successfully",
         data: result
     });
 }));
 const handleGetAllRentals = (0, higherOrderFunction_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield booking_services_1.bookingServices.getAllRentalService(req.user.userId);
+    const result = yield booking_services_1.bookingServices.getAllRentalsService();
     (0, success_1.successResponse)(res, {
         success: true,
         statusCode: 201,
         message: result.length === 0 ? "No Data Found" : "Rentals retrieved successfully",
-        data: result
+        data: result,
+    });
+}));
+const handleDeleteBooking = (0, higherOrderFunction_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield booking_services_1.bookingServices.deleteRentalService(req.params.id);
+    (0, success_1.successResponse)(res, {
+        success: true,
+        statusCode: 201,
+        message: "Rental deleted successfully",
+        data: result,
     });
 }));
 exports.rentalController = {
     handleCreateRental,
     handleReturnRental,
-    handleGetAllRentals
+    // handleGetRentalsById,
+    handleGetRentalsByUserId,
+    handleGetAllRentals,
+    handleCalculateRental,
+    handleUpdateBookingAfterReturnMoney,
+    handleDeleteBooking,
 };

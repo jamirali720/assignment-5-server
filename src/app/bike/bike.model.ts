@@ -11,10 +11,12 @@ const bikeSchema = new Schema<TBike>(
     description: {
       type: String,
       required: [true, "Description is required"],
+      trim: true,
     },
     pricePerHour: {
       type: Number,
       required: [true, "Price per hour is required"],
+      trim: true,
     },
     isAvailable: {
       type: Boolean,
@@ -23,18 +25,22 @@ const bikeSchema = new Schema<TBike>(
     cc: {
       type: String,
       required: [true, "CC is required"],
+      trim: true,
     },
     year: {
       type: Number,
       required: [true, "Year is required"],
+      trim: true,
     },
     model: {
       type: String,
       required: [true, "Model is required"],
+      trim: true,
     },
     brand: {
       type: String,
       required: [true, "Brand is required"],
+      trim: true,
     },
     image: {
       url: {
@@ -55,14 +61,14 @@ const bikeSchema = new Schema<TBike>(
       default: 0,
     },
     reviews: [
-      {        
+      {
         userId: {
-          type: Schema.Types.ObjectId,    
-          ref: "User",    
+          type: Schema.Types.ObjectId,
+          ref: "User",
           required: [true, "User ID is required"],
         },
         username: {
-          type: String,         
+          type: String,
           required: [true, "User name is required"],
         },
         email: {

@@ -13,32 +13,58 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.authServices = void 0;
+const bcrypt_1 = __importDefault(require("bcrypt"));
 const error_1 = require("../utils/error");
 const user_model_1 = require("../user/user.model");
 const configs_1 = __importDefault(require("../configs"));
-const generateToken_1 = __importDefault(require("../utils/generateToken"));
+const generateToken_1 = require("../utils/generateToken");
 const http_status_1 = __importDefault(require("http-status"));
+const auth_utils_1 = __importDefault(require("./auth.utils"));
 const signupUserService = (payload) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield user_model_1.User.findOne({ email: payload.email });
+    if (user) {
+        throw new error_1.ErrorHandler(http_status_1.default.CONFLICT, "User Already exist");
+    }
     let result = yield user_model_1.User.create(payload);
     return result;
 });
 const loginUserService = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = payload;
-    const user = yield user_model_1.User.isUserExists(email);
+    const user = yield user_model_1.User.findOne({ email });
     if (!user) {
-        throw new error_1.ErrorHandler(http_status_1.default.NOT_FOUND, "User dose not exist");
+        throw new error_1.ErrorHandler(http_status_1.default.NOT_FOUND, "User dose not exist with email");
     }
-    const isPasswordMatched = yield user_model_1.User.comparePassword(password, user.password);
+    const isPasswordMatched = yield bcrypt_1.default.compare(password, user.password);
     if (!isPasswordMatched) {
         throw new error_1.ErrorHandler(http_status_1.default.CONFLICT, "Password not matched");
     }
-    const token = (0, generateToken_1.default)(user, configs_1.default.jwtAccessTokenSecretKey, configs_1.default.jwtAccessTokenExpiration);
+    const accessToken = generateToken_1.generateToken.createAccessToken(user, configs_1.default.jwtAccessTokenSecretKey, configs_1.default.jwtAccessTokenExpiration);
+    const refreshToken = generateToken_1.generateToken.createAccessToken(user, configs_1.default.jwtRefreshTokenSecretKey, configs_1.default.jwtRefreshTokenExpiration);
     return {
         user,
-        token,
+        accessToken,
+        refreshToken,
+    };
+});
+const getRefreshTokenService = (token) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("check service", token);
+    const decoded = (0, auth_utils_1.default)(token, configs_1.default.jwtRefreshTokenSecretKey);
+    if (!decoded) {
+        throw new error_1.ErrorHandler(http_status_1.default.UNAUTHORIZED, "Refresh token is invalid or expired");
+    }
+    const { userId } = decoded;
+    const user = yield user_model_1.User.findById(userId);
+    if (!user) {
+        throw new error_1.ErrorHandler(http_status_1.default.NOT_FOUND, "User not found");
+    }
+    const accessToken = generateToken_1.generateToken.createAccessToken(user, configs_1.default.jwtAccessTokenSecretKey, configs_1.default.jwtAccessTokenExpiration);
+    return {
+        user,
+        accessToken,
     };
 });
 exports.authServices = {
     signupUserService,
     loginUserService,
+    getRefreshTokenService,
 };

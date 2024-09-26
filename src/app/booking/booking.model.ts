@@ -21,14 +21,33 @@ const bookingSchema = new Schema<TBooking>(
       type: String,
       default: null,
     },
+    advanced: {
+      type: Number,
+      required: [true, "Advanced amount is required"],
+      trim: true,
+    },
     totalCost: {
       type: Number,
       required: [true, "Total cost is required"],
       default: 0,
     },
+    remainingCost: {
+      type: Number,
+      required: [true, "Remaining cost is required"],
+      default: 0,
+    },
     isReturned: {
       type: Boolean,
       default: false,
+    },
+    isReturnedMoney: {
+      type: Boolean,
+      default: false,
+    },
+    paymentId: {
+      type: String,
+      required: [true, "Payment ID is required"],
+      trim: true,
     },
   },
   { timestamps: true }

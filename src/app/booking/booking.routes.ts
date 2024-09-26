@@ -15,12 +15,40 @@ rentalRouter
     rentalController.handleCreateRental
   );
 
+  // bike fair calculation
+rentalRouter
+  .route("/calculate/:id")
+  .put(isAuthenticated(roles.admin), rentalController.handleCalculateRental);
+
+
+  // bike return 
 rentalRouter
   .route("/:id/return")
-  .put(isAuthenticated(roles.admin), rentalController.handleReturnRental);
+  .put(isAuthenticated(roles.user), rentalController.handleReturnRental);
 
+  // get rentals by user id
 rentalRouter
   .route("/")
-  .get(isAuthenticated(roles.user), rentalController.handleGetAllRentals);
+  .get(isAuthenticated(roles.user), rentalController.handleGetRentalsByUserId);
+
+
+  // get all rentals
+rentalRouter
+  .route("/all-rentals")
+  .get(isAuthenticated(roles.admin), rentalController.handleGetAllRentals);
+
+
+  // update refund money
+rentalRouter
+  .route("/update-after-refund/:bookingId")
+  .put(
+    isAuthenticated(roles.admin),
+    rentalController.handleUpdateBookingAfterReturnMoney
+  );
+
+  //delete rental
+rentalRouter
+  .route("/delete-rental/:id")
+  .delete(isAuthenticated(roles.admin), rentalController.handleDeleteBooking);
 
 export default rentalRouter;

@@ -10,6 +10,16 @@ export const userUpdateValidationSchema = z.object({
       .string({
         required_error: "Phone is required",
         invalid_type_error: "Phone must be string",
+      }),
+    email: z
+      .string({
+        required_error: "Email is required",
+        invalid_type_error: "Email must be string",
+      }),
+    address: z
+      .string({
+        required_error: "Address is required",
+        invalid_type_error: "Address must be string",
       })
       
   }),

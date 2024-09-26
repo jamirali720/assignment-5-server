@@ -14,11 +14,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.isAuthenticated = void 0;
 const higherOrderFunction_1 = __importDefault(require("../utils/higherOrderFunction"));
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const error_1 = require("../utils/error");
-const configs_1 = __importDefault(require("../configs"));
 const user_model_1 = require("../user/user.model");
 const http_status_1 = __importDefault(require("http-status"));
+const auth_utils_1 = __importDefault(require("../auth/auth.utils"));
+const configs_1 = __importDefault(require("../configs"));
 const isAuthenticated = (...roles) => {
     return (0, higherOrderFunction_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         var _a, _b;
@@ -27,7 +27,7 @@ const isAuthenticated = (...roles) => {
         if (!token) {
             throw new error_1.ErrorHandler(http_status_1.default.UNAUTHORIZED, "You are un-authenticated. Please Login first");
         }
-        const decoded = jsonwebtoken_1.default.verify(token, configs_1.default.jwtAccessTokenSecretKey);
+        const decoded = (0, auth_utils_1.default)(token, configs_1.default.jwtAccessTokenSecretKey);
         if (!decoded) {
             throw new error_1.ErrorHandler(http_status_1.default.UNAUTHORIZED, "You are not authorized or your token has been expired. Please Login first ");
         }

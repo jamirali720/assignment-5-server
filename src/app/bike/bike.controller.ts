@@ -9,6 +9,7 @@ import { bikeServices } from "./bike.services";
 import { Bike } from "./bike.model";
 import { ErrorHandler } from "../utils/error";
 import httpStatus from "http-status";
+import { TBikeQuery } from "./bike.interface";
 
 const handleCreateBike = catchAsync(async (req, res) => {
   const resp = (await uploadImageToCloudinary(
@@ -27,9 +28,24 @@ const handleCreateBike = catchAsync(async (req, res) => {
     data: result,
   });
 });
+
+
 const handleGetAllBikes = catchAsync(async (req, res) => {
-  const query = req.query.name as string;  
+  const query = req.query as TBikeQuery;      
   const result = await bikeServices.getAllBikesService(query);
+
+  successResponse(res, {
+    success: true,
+    statusCode: 201,
+    message:
+      result.length === 0 ? "No Data Found" : "Bikes retrieved successfully",
+    data: result,
+  });
+});
+
+
+const handleGetAllBikesWithoutQuery = catchAsync(async (req, res) => {  
+  const result = await bikeServices.getAllBikesWithoutQueryService();
 
   successResponse(res, {
     success: true,
@@ -49,6 +65,8 @@ const handleGetSingleBike = catchAsync(async (req, res) => {
     data: result,
   });
 });
+
+
 const handleUpdateBike = catchAsync(async (req, res) => {
   const { id } = req.params;
   const bike = await Bike.findById(id);
@@ -57,6 +75,10 @@ const handleUpdateBike = catchAsync(async (req, res) => {
       httpStatus.NOT_FOUND,
       `Bike not found with this ${id}`
     );
+  }
+
+  if(req.file?.path){
+    
   }
   await deleteImageFromCloudinary(bike.image.public_id);
 
@@ -88,6 +110,17 @@ const handleDeleteBike = catchAsync(async (req, res) => {
     data: result,
   });
 });
+
+const handleDeleteBikeFromDatabase = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const result = await bikeServices.deleteBikeFromDBService(id);
+  successResponse(res, {
+    success: true,
+    statusCode: 201,
+    message: result === null ? "No Data Found" : "Bike deleted successfully",
+    data: result,
+  });
+});
 const handleCreateReview = catchAsync(async (req, res) => {  
   const result = await bikeServices.createReviewService(
     req.params.id,
@@ -109,4 +142,6 @@ export const bikeController = {
   handleGetSingleBike,
   handleDeleteBike,
   handleCreateReview,
+  handleDeleteBikeFromDatabase,
+  handleGetAllBikesWithoutQuery,
 };

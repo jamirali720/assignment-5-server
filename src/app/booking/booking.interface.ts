@@ -5,6 +5,10 @@ export type TBooking = {
   bikeId: Types.ObjectId;
   startTime: Date;
   returnTime: string | null;
+  advanced: number;
   totalCost: number;
+  remainingCost: number;
+  isReturnedMoney: boolean;
+  paymentId: string;
   isReturned: boolean;
 };

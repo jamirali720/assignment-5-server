@@ -21,13 +21,16 @@ exports.userSignUpValidationSchema = zod_1.z.object({
             invalid_type_error: "Password must be string",
         })
             .min(6, { message: "Password must be at least 6 characters" }),
-        phone: zod_1.z.string(),
+        phone: zod_1.z.string({
+            required_error: "Phone is required",
+            invalid_type_error: "Phone must be string",
+        }),
         address: zod_1.z.string({
             required_error: "Address is required",
             invalid_type_error: "Address must be string",
         }),
         role: zod_1.z.enum([...user_constraint_1.role]).default("user"),
-    })
+    }),
 });
 exports.userLoginValidationSchema = zod_1.z.object({
     body: zod_1.z.object({

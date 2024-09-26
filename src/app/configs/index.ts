@@ -12,4 +12,6 @@ export default {
   jwtRefreshTokenExpiration: process.env.JWT_REFRESH_TOKEN_EXPIRATION,
   adminEmail: process.env.ADMIN_EMAIL,
   NODE_ENV: process.env.NODE_ENV,
+  stripePublishableKey: process.env.STRIPE_API_PUBLISHABLE_KEY,
+  stripeSecretKey: process.env.STRIPE_SECRET_KEY,
 };

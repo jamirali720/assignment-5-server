@@ -12,16 +12,16 @@ exports.createBikeValidationSchema = zod_1.z.object({
             required_error: "Description is required",
             invalid_type_error: "Description must be string",
         }),
-        pricePerHour: zod_1.z.number({
+        pricePerHour: zod_1.z.string({
             required_error: "Price per hour is required",
-            invalid_type_error: "Price per hour must be string",
+            invalid_type_error: "Price per hour must be number",
         }),
         isAvailable: zod_1.z.boolean().default(true),
-        cc: zod_1.z.number({
+        cc: zod_1.z.string({
             required_error: "Cc is required",
-            invalid_type_error: "Cc must be number",
+            invalid_type_error: "Cc must be string",
         }),
-        year: zod_1.z.number({
+        year: zod_1.z.string({
             required_error: "Year is required",
             invalid_type_error: "Year must be number",
         }),
@@ -39,10 +39,10 @@ exports.updateBikeValidationSchema = zod_1.z.object({
     body: zod_1.z.object({
         name: zod_1.z.string().optional(),
         description: zod_1.z.string().optional(),
-        pricePerHour: zod_1.z.number().optional(),
-        isAvailable: zod_1.z.boolean().default(true).optional(),
-        cc: zod_1.z.number().optional(),
-        year: zod_1.z.number().optional(),
+        pricePerHour: zod_1.z.string().optional(),
+        isAvailable: zod_1.z.string().optional(),
+        cc: zod_1.z.string().optional(),
+        year: zod_1.z.string().optional(),
         model: zod_1.z.string().optional(),
         brand: zod_1.z.string().optional(),
     }),

@@ -33,3 +33,11 @@ export type TReview = {
   message: string;
   rating: number;
 };
+
+export type TBikeQuery = {
+  brand: string;
+  model: string;
+  year: string;
+  cc: string;
+  name: string;
+};

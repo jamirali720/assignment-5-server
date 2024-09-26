@@ -4,6 +4,8 @@ import userRouter from "../user/user.routes";
 import bikeRouter from "../bike/bike.routes";
 import rentalRouter from "../booking/booking.routes";
 import imageRouter from "../imageModel/imageRoute";
+import teamRouter from "../team/team.routes";
+import paymentRouter from "../payment/payment.routes";
 
 const router = Router();
 
@@ -27,6 +29,14 @@ const moduleRoutes = [
   {
     path: "/images",
     route: imageRouter,
+  },
+  {
+    path: "/teams",
+    route: teamRouter,
+  },
+  {
+    path: "/payment",
+    route: paymentRouter,
   },
 ];
 

@@ -16,6 +16,7 @@ exports.User = void 0;
 const mongoose_1 = require("mongoose");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const configs_1 = __importDefault(require("../configs"));
+const user_constraint_1 = require("./user.constraint");
 const userSchema = new mongoose_1.Schema({
     name: {
         type: String,
@@ -38,7 +39,6 @@ const userSchema = new mongoose_1.Schema({
         type: String,
         required: [true, "Password is required"],
         minLength: [6, "Password must be at least 3 characters"],
-        select: false,
     },
     phone: {
         type: String,
@@ -48,35 +48,32 @@ const userSchema = new mongoose_1.Schema({
     address: {
         type: String,
         required: [true, "Address is required"],
+        trim: true
     },
     role: {
         type: String,
-        default: "user",
-        enum: ["user", "admin"],
+        default: user_constraint_1.roles.user,
+        enum: [user_constraint_1.roles.admin, user_constraint_1.roles.user],
+    },
+    image: {
+        url: {
+            type: String,
+            required: [true, "Image URL is required"],
+        },
+        public_id: {
+            type: String,
+            required: [true, "Public ID is required"],
+        },
     },
 }, { timestamps: true });
 // password hashing before saving user
 userSchema.pre("save", function (next) {
     return __awaiter(this, void 0, void 0, function* () {
         this.password = yield bcrypt_1.default.hash(this.password, Number(configs_1.default.saltRound));
+        if (this.email === configs_1.default.adminEmail) {
+            this.role = "admin";
+        }
         next();
     });
 });
-userSchema.post("save", function (doc, next) {
-    return __awaiter(this, void 0, void 0, function* () {
-        doc.password = "";
-        next();
-    });
-});
-//compare password while user login
-userSchema.statics.comparePassword = function (plainPassword, hashedPassword) {
-    return __awaiter(this, void 0, void 0, function* () {
-        return yield bcrypt_1.default.compare(plainPassword, hashedPassword);
-    });
-};
-userSchema.statics.isUserExists = function (email) {
-    return __awaiter(this, void 0, void 0, function* () {
-        return yield exports.User.findOne({ email }).select("+password");
-    });
-};
 exports.User = (0, mongoose_1.model)("User", userSchema);

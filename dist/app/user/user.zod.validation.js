@@ -12,6 +12,16 @@ exports.userUpdateValidationSchema = zod_1.z.object({
             .string({
             required_error: "Phone is required",
             invalid_type_error: "Phone must be string",
+        }),
+        email: zod_1.z
+            .string({
+            required_error: "Email is required",
+            invalid_type_error: "Email must be string",
+        }),
+        address: zod_1.z
+            .string({
+            required_error: "Address is required",
+            invalid_type_error: "Address must be string",
         })
     }),
 });

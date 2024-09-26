@@ -31,6 +31,7 @@ bikeRouter
     bikeController.handleCreateBike
   );
 bikeRouter.route("/all-bikes").get(bikeController.handleGetAllBikes);
+bikeRouter.route("/bikes").get(bikeController.handleGetAllBikesWithoutQuery);
 
 bikeRouter.route("/single-bike/:id").get(   
   bikeController.handleGetSingleBike
@@ -52,6 +53,12 @@ bikeRouter
   .delete(
     isAuthenticated(roles.admin),
      bikeController.handleDeleteBike);
+
+bikeRouter
+  .route("/delete-bike-from-db/:id")
+  .delete(
+    isAuthenticated(roles.admin),
+     bikeController.handleDeleteBikeFromDatabase);
 
      
 bikeRouter
