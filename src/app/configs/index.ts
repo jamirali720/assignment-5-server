@@ -14,5 +14,5 @@ export default {
   NODE_ENV: process.env.NODE_ENV,
   stripePublishableKey: process.env.STRIPE_API_PUBLISHABLE_KEY,
   stripeSecretKey: process.env.STRIPE_SECRET_KEY,
-  smtpPassword: process.env.SMTP_PASSWORD_ONE,
+  smtpPassword: process.env.SMTP_PASSWORD_TWO,
 };
