@@ -2,6 +2,7 @@ import { Bike } from "./bike.model";
 import { TBike, TBikeQuery, TReview } from "./bike.interface";
 import { ErrorHandler } from "../utils/error";
 import httpStatus from "http-status";
+import { sendContactEmail } from "../utils/sendEmail";
 
 const createBikeService = async (payload: TBike) => {
   const newBike = await Bike.create(payload);
@@ -160,6 +161,26 @@ const createReviewService = async (id: string, payload: TReview) => {
   return bike;
 };
 
+
+
+// contact information for contact section
+const contactFormService = async (payload: {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+}) => {
+  const result = await sendContactEmail(payload);
+  if (!result) {
+    throw new ErrorHandler(
+      httpStatus.BAD_REQUEST,
+      "Failed to send contact information"
+    );
+  }
+
+  return result;
+};
+
 export const bikeServices = {
   createBikeService,
   getAllBikesService,
@@ -170,4 +191,5 @@ export const bikeServices = {
   uploadHeroImageService,
   createReviewService,
   getAllBikesWithoutQueryService,
+  contactFormService,
 };

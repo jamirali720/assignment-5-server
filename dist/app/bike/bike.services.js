@@ -16,6 +16,7 @@ exports.bikeServices = void 0;
 const bike_model_1 = require("./bike.model");
 const error_1 = require("../utils/error");
 const http_status_1 = __importDefault(require("http-status"));
+const sendEmail_1 = require("../utils/sendEmail");
 const createBikeService = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const newBike = yield bike_model_1.Bike.create(payload);
     if (!newBike) {
@@ -138,6 +139,14 @@ const createReviewService = (id, payload) => __awaiter(void 0, void 0, void 0, f
     yield bike.save({ validateBeforeSave: false });
     return bike;
 });
+// contact information for contact section
+const contactFormService = (payload) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield (0, sendEmail_1.sendContactEmail)(payload);
+    if (!result) {
+        throw new error_1.ErrorHandler(http_status_1.default.BAD_REQUEST, "Failed to send contact information");
+    }
+    return result;
+});
 exports.bikeServices = {
     createBikeService,
     getAllBikesService,
@@ -148,4 +157,5 @@ exports.bikeServices = {
     uploadHeroImageService,
     createReviewService,
     getAllBikesWithoutQueryService,
+    contactFormService,
 };

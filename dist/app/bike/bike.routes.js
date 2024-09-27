@@ -29,4 +29,7 @@ bikeRouter
 bikeRouter
     .route("/create-review/:id")
     .put((0, authentication_1.isAuthenticated)(user_constraint_1.roles.user), bike_controller_1.bikeController.handleCreateReview);
+bikeRouter
+    .route("/contact")
+    .post(bike_controller_1.bikeController.handleContactForm);
 exports.default = bikeRouter;

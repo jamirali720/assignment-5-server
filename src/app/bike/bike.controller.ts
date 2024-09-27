@@ -135,6 +135,19 @@ const handleCreateReview = catchAsync(async (req, res) => {
   });
 });
 
+
+// contact form submit  handler
+const handleContactForm = catchAsync(async (req, res) => {
+  const result = await bikeServices.contactFormService(req.body);
+  successResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Contact form submitted successfully",
+    data: result,
+  });
+});
+
+
 export const bikeController = {
   handleCreateBike,
   handleGetAllBikes,
@@ -144,4 +157,5 @@ export const bikeController = {
   handleCreateReview,
   handleDeleteBikeFromDatabase,
   handleGetAllBikesWithoutQuery,
+  handleContactForm,
 };

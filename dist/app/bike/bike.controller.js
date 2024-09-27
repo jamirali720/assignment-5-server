@@ -106,6 +106,16 @@ const handleCreateReview = (0, higherOrderFunction_1.default)((req, res) => __aw
         data: result,
     });
 }));
+// contact form submit  handler
+const handleContactForm = (0, higherOrderFunction_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield bike_services_1.bikeServices.contactFormService(req.body);
+    (0, success_1.successResponse)(res, {
+        success: true,
+        statusCode: http_status_1.default.OK,
+        message: "Contact form submitted successfully",
+        data: result,
+    });
+}));
 exports.bikeController = {
     handleCreateBike,
     handleGetAllBikes,
@@ -115,4 +125,5 @@ exports.bikeController = {
     handleCreateReview,
     handleDeleteBikeFromDatabase,
     handleGetAllBikesWithoutQuery,
+    handleContactForm,
 };

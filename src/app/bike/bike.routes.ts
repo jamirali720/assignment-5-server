@@ -67,4 +67,8 @@ bikeRouter
     isAuthenticated(roles.user),
      bikeController.handleCreateReview);
 
+bikeRouter
+  .route("/contact")
+  .post( bikeController.handleContactForm);
+
 export default bikeRouter;
